@@ -1,0 +1,44 @@
+[
+  {
+    "model": "api.albumimage",
+    "pk": 1,
+    "fields": {
+      "name": "Snowboard",
+      "pic": "../media/snowboard.jpeg",
+      "album": 1,
+      "tags": "#snowboard",
+      "created": "2021-08-27T15:17:10.375877",
+      "owner": 1
+    }
+  },
+  {
+    "model": "api.albumimage",
+    "pk": 2,
+    "fields": {
+      "name": "food",
+      "pic": "../media/images.jpeg",
+      "album": 2,
+      "tags": "#food",
+      "created": "2021-08-27T15:17:10.375877",
+      "owner": 1
+    }
+  },
+  {
+    "model": "api.albumimage",
+    "pk": 3,
+    "fields": {
+      "name": "cat",
+      "pic": "../media/Cat03.jpg",
+      "album": 2,
+      "tags": "#cat",
+      "created": "2021-08-27T15:17:10.375877",
+      "owner": 1
+    }
+  }
+]
+
+
+
+
+
+

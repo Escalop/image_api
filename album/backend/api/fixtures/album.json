@@ -1,0 +1,25 @@
+
+[
+  {
+    "model": "api.album",
+    "pk": 1,
+    "fields": {
+      "title": "Sport",
+      "description": "Freestyle",
+      "is_visible": "True",
+      "created": "2021-08-27T15:17:10.375877",
+      "owner": 1
+    }
+  },
+  {
+    "model": "api.album",
+    "pk": 2,
+    "fields": {
+      "title": "Nature",
+      "description": "Ocean",
+      "is_visible": "True",
+      "created": "2021-11-27T15:17:10.375877",
+      "owner": 1
+    }
+  }
+]
