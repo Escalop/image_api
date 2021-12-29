@@ -1,10 +1,7 @@
-import rest_framework.authentication
-from garpixcms.settings import *  # noqa
-from pathlib import Path
+from garpixcms.settings import *
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -12,24 +9,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-
 INSTALLED_APPS += [
-    'rest_auth',
     'allauth',
     'allauth.account',
-    'rest_auth.registration',
     'django_filters',
     'api',
-
+    'djoser',
 
 ]
 
 AUTH_USER_MODEL = 'user.User'
-
-ACCOUNT_USERNAME_REQUIRED = True
-
-SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 REST_AUTH_SERIALIZERS = {
@@ -39,6 +28,12 @@ REST_AUTH_SERIALIZERS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
         ('rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication'),
+         'rest_framework.authentication.SessionAuthentication'),
+    'DEFAULT_SCHEMA_CLASS':
+        'rest_framework.schemas.coreapi.AutoSchema',
 }
 
+DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+}

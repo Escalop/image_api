@@ -1,1 +1,1 @@
-from .api_page import * # noqa
+from .api_page import *
