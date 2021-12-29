@@ -1,6 +1,5 @@
-# GarpixCMS Empty Template
+# PhotoAlbumAPI
 
-Cookiecutter template for GarpixCMS == 1.0.0.
 
 ## Install
 
@@ -38,11 +37,15 @@ python3 backend/manage.py makemigrations
 python3 backend/manage.py migrate
 python3 backend/manage.py createsuperuser
 ```
+6. Run 
+```
+manage.py loaddata album
+manage.py loaddata image
+```
 
-6. Run the server:
+8. Run the server:
 
 ```
 python3 backend/manage.py runserver
 ```
 
-7. Enjoy!
