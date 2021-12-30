@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from ..permissions.permissions import IsOwnerOrReadOnly
@@ -31,18 +31,23 @@ class RegisterUserView(CreateAPIView):
 
 
 class AlbumList(generics.ListCreateAPIView):
-    queryset = Album.objects.annotate(num_items=Count('photos__pic'))
+    queryset = Album.objects.all()
+    #queryset = Album.objects.annotate(num_items=Count('photos__pic'))
     serializer_class = AlbumSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
     filter_backends = [OrderingFilter]
     ordering_fields = ['created', 'num_items']
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def get_queryset(self):
         user = self.request.user
-        return Album.objects.filter(owner=user)
+        return Album.objects.annotate(num_items=Count('photos__pic', filter=Q(owner=user)))
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
+
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [IsOwnerOrReadOnly]
@@ -60,12 +65,12 @@ class ImageList(generics.ListCreateAPIView):
     ordering_fields = ['created', 'album']
     filterset_fields = ['tags', 'album']
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def get_queryset(self):
         user = self.request.user
         return AlbumImage.objects.filter(owner=user)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):

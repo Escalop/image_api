@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from user.models import User
 from rest_framework.fields import ImageField
 from ..models.api_page import AlbumImage, Album
 
@@ -14,7 +13,7 @@ class UserFilteredPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = serializers.ReadOnlyField(source='owner.id')
     thumb = ImageField(read_only=True)
     album = UserFilteredPrimaryKeyRelatedField(queryset=Album.objects)
 
@@ -31,21 +30,22 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = serializers.ReadOnlyField(source='owner.id')
     photos = ImageSerializer(many=True, read_only=True)
     photo_count = serializers.IntegerField(source='photos.count', read_only=True)
     created = serializers.ReadOnlyField()
+
 
     class Meta:
         model = Album
         fields = ['id',  'title', 'owner', 'description', 'created', 'photos', 'photo_count']
         depth = 1
 
+    def get_queryset(self):
+        user = self.request.user
+        return Album.objects.filter(owner=user)
 
-class UserSerializer(serializers.ModelSerializer):
-    album = AlbumSerializer(many=True, read_only=True)
-    image = ImageSerializer(many=True, read_only=True)
+    def create(self, validated_data):
+        return Album.objects.create(**validated_data)
 
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'album', 'image']
+
